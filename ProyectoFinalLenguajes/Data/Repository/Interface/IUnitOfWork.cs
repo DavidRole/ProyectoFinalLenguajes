@@ -2,13 +2,13 @@
 {
     public interface IUnitOfWork
     {
-        IAdminRepository AdminRepository { get; }
-        ICookRepository CookRepository { get; }
-        ICustomerRepository CustomerRepository { get; }
-        IDishRepository IDishRepository { get; }
-        IOrderDetailRepository OrderDetailRepository { get; }
+        IAdminRepository Admin { get; }
+        ICookRepository Cook { get; }
+        ICustomerRepository Customer { get; }
+        IDishRepository Dish { get; }
+        IOrderDetailRepository OrderDetail { get; }
 
-        IOrderRepository OrderRepository { get; }
+        IOrderRepository Order { get; }
 
         void Save();
     }
