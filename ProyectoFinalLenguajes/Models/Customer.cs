@@ -8,5 +8,8 @@ namespace ProyectoFinalLenguajes.Models
 
         [Required]
         public string Address { get; set; }
+
+        [Required]
+        public bool IsBlocked { get; set; }
     }
 }
