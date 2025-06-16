@@ -14,7 +14,7 @@ namespace ProyectoFinalLenguajes.Models
         public int Id { get; set; }
 
         [Required]
-        public string CustomerId { get; set; }
+        public int CustomerId { get; set; }
 
         [Required]
         public string Name { get; set; }
@@ -22,6 +22,8 @@ namespace ProyectoFinalLenguajes.Models
         [Required]
         public DateTime Date { get; set; }
 
+        [Required]
+        public string Status { get; set; }
        
         [ForeignKey("CustomerId")]
         public virtual Customer Customer { get; set; }
