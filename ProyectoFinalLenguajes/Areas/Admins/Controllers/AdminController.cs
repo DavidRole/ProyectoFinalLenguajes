@@ -20,17 +20,17 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
         }
 
         [HttpGet]
-        public IActionResult Upsert(string? id)
+        public IActionResult Upsert(int? id)
         {
 
             Admin admin = new Admin();
 
-            if (id == null || id == string.Empty)
+            if (id == 0 || id == null)
             {
                 return View(admin);
             }
 
-            admin = _unitOfWork.Admin.Get(x => x.Email.Equals(id));
+            admin = _unitOfWork.Admin.Get(x => x.Id == id );
 
             if (admin == null)
             {
@@ -45,7 +45,7 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_unitOfWork.Admin.Get(x => x.Email.Equals(admin.Email)) == null)
+                if (admin.Id == 0)
                 {
                     _unitOfWork.Admin.Add(admin);
                 }
