@@ -1,0 +1,41 @@
+﻿@model List<Dish>
+
+<form>
+    <div class="container">
+        <div class="row pt-4">
+            <div class="col-6">
+                <h2 class="text-info">Dish list</h2>
+            </div>
+            <div class="col-6 text-end">
+                <a asp-controller="Dish" asp-action="Upsert" class="btn btn-outline-info m-1">
+                    <i class="bi bi-plus-circle m-1"></i>
+                    New Dish
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-striped" id="tblData">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+
+    </table>
+</form>
+
+@section Scripts {
+    <script src="~/js/dish.js"></script>
+}
+@* <partial name="_ValidationScriptsPartial" />
+<script src="https://cdn.tiny.cloud/1/674ivyskjvpqrx2sw8ie1060kvzzw805rf04gm5wq2mu5kib/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
+<script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+    });
+</script> *@

@@ -17,7 +17,7 @@
     <header>
         <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ProyectoFinalLenguajes</a>
+                <a class="navbar-brand text-info fw-bolder" asp-area="" asp-controller="Home" asp-action="Index">ProyectoFinalLenguajes</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -25,12 +25,21 @@
                 <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-info" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
 
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="Admins" asp-controller="Admin" asp-action="Index">Admin</a>
-                            </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-info" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Users Management</a>
+                            <div class="dropdown-menu">
+                                <a class="nav-link text-info" asp-area="Admins" asp-controller="Admin" asp-action="Index">Admins</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-info" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Service Management</a>
+                            <div class="dropdown-menu">
+                                <a class="nav-link text-info" asp-area="Admins" asp-controller="Dish" asp-action="Index">Dishes</a>
+                            </div>
+                        </li>
                     </ul>
                     <div>
                         <h3>
