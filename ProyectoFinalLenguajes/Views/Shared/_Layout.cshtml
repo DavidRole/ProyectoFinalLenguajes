@@ -1,10 +1,11 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using ProyectoFinalLenguajes.Utilities
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ProyectoFinalLenguajes</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ProyectoFinalLenguajes.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -13,7 +14,7 @@
 
 
 </head>
-<body data-bs-theme="dark">
+<body>
     <header>
         <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
             <div class="container-fluid">
@@ -26,23 +27,37 @@
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Users Management</a>
-                            <div class="dropdown-menu">
-                                <a class="nav-link text-light" asp-area="Admins" asp-controller="Admin" asp-action="Index">Admins</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Service Management</a>
-                            <div class="dropdown-menu">
-                                <a class="nav-link text-light" asp-area="Admins" asp-controller="Dish" asp-action="Index">Dishes</a>
-                            </div>
-                        </li>
+                        @if (User.IsInRole(StaticValues.RoleAdmin))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Users Management</a>
+                                <div class="dropdown-menu">
+                                    <a class="nav-link text-light" asp-area="Admins" asp-controller="Admin" asp-action="Index">Admins</a>
+                                    <a class="nav-link text-light" id="register" asp-area="Identity" asp-page="/Account/Register">Register New User</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Service Management</a>
+                                <div class="dropdown-menu">
+                                    <a class="nav-link text-light" asp-area="Admins" asp-controller="Dish" asp-action="Index">Dishes</a>
+                                </div>
+                            </li>
+                        }
+                        else if (User.IsInRole(StaticValues.RoleCook))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="Cook" asp-controller="Order" asp-action="Index">Orders</a>
+                            </li>
+                        }
                     </ul>
                     <div>
                         <partial name="_LoginPartial" />
+                    </div>
+                    <div class="btn-group ms-4 me-2">
+                        <button class="btn btn-link nav-link text-light" id="darkModeToggle" title="Toggle dark mode">
+                            <i class="bi bi-moon-stars-fill"></i>
+                        </button>
                     </div>
                 </div>
 
