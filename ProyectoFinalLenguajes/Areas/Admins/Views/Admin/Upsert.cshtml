@@ -1,11 +1,11 @@
-﻿@model Admin
+﻿@model AppUser
 
 <form method="post">
     <input type="hidden" asp-for="Id" />
     <div class="container p-3 mt-4 border">
         <div class="container fluid">
             <div class="row pb-2">
-                <h2 class="text-info"> @(Model.Id == 0 ? "Add" : "Edit") Admin</h2>
+                <h2 class="text-info">Edit Admin</h2>
             </div>
             <div class="row mb-3">
                 <label asp-for="Email"></label>
@@ -14,17 +14,20 @@
                 <span asp-validation-for="Email" class="text-bg-danger mx-1"></span>
             </div>
             <div class="row mb-3">
-                <label asp-for="Name"></label>
-                <input asp-for="Name" class="form-control" />
+                <label asp-for="FirstName"></label>
+                <input asp-for="FirstName" class="form-control" />
 
-                <span asp-validation-for="Name" class="text-bg-danger mx-1"></span>
+                <span asp-validation-for="FirstName" class="text-bg-danger mx-1"></span>
             </div>
             <div class="row mb-3">
-                <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" />
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" class="form-control" />
 
-                <span asp-validation-for="Password" class="text-bg-danger mx-1"></span>
+                <span asp-validation-for="LastName" class="text-bg-danger mx-1"></span>
             </div>
+
+
+            
         </div>
         <div class="container align-content-end">
             <div class="btn-group">

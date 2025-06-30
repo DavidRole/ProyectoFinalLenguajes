@@ -14,7 +14,7 @@ namespace ProyectoFinalLenguajes.Models
         public int Id { get; set; }
 
         [Required]
-        public int CustomerId { get; set; }
+        public string CustomerId { get; set; }
 
         [Required]
         public string Name { get; set; }
@@ -26,7 +26,7 @@ namespace ProyectoFinalLenguajes.Models
         public string Status { get; set; }
        
         [ForeignKey("CustomerId")]
-        public virtual Customer Customer { get; set; }
+        public virtual AppUser Customer { get; set; }
 
         public virtual ICollection<OrderDetail> OrderDishes { get; set; }
 

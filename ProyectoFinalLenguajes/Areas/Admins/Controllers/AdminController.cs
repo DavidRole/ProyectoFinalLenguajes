@@ -1,17 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using ProyectoFinalLenguajes.Models;
-using ProyectoFinalLenguajes.Data.Repository.Interface;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using ProyectoFinalLenguajes.Utilities;
 
 namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
 {
     [Area("Admins")]
+    [Authorize(Roles = StaticValues.RoleAdmin)]
     public class AdminController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public AdminController(IUnitOfWork uow)
+        private readonly UserManager<IdentityUser> _userManager;
+        public AdminController(UserManager<IdentityUser> uow)
         {
-            _unitOfWork = uow;
+            _userManager = uow;
         }
 
         public IActionResult Index()
@@ -20,17 +23,17 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
         }
 
         [HttpGet]
-        public IActionResult Upsert(int? id)
+        public IActionResult Upsert(string? id)
         {
 
-            Admin admin = new Admin();
+            AppUser admin = new AppUser();
 
-            if (id == 0 || id == null)
+            if (String.IsNullOrEmpty(id))
             {
                 return View(admin);
             }
 
-            admin = _unitOfWork.Admin.Get(x => x.Id == id );
+            admin = (AppUser)_userManager.Users.ToList().Select(X => X.Id.Equals(id));
 
             if (admin == null)
             {
@@ -41,44 +44,41 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
         }
 
         [HttpPost]
-        public IActionResult Upsert(Admin admin)
+        public IActionResult Upsert(AppUser admin)
         {
             if (ModelState.IsValid)
             {
-                if (admin.Id == 0)
+                if (!String.IsNullOrEmpty(admin.Id))
                 {
-                    _unitOfWork.Admin.Add(admin);
+                    _userManager.UpdateAsync(admin);
+
+                    TempData["success"] = "Action Completed successfully";
+                    return RedirectToAction("Index");
                 }
-                else
-                {
-                    _unitOfWork.Admin.Update(admin);
-                }
-                _unitOfWork.Save();
-                TempData["success"] = "Action Completed successfully";
-                return RedirectToAction("Index");
+                TempData["error"] = "The action couldn't be resolved";
+                return View(admin);
             }
             TempData["error"] = "The action couldn't be resolved";
-            return View(admin);
+            return View();
         }
 
         #region API
         public IActionResult GetAll()
         {
-            var adminList = _unitOfWork.Admin.GetAll();
+            var adminList = _userManager.Users.ToList();
             return Json(new { data = adminList });
         }
 
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(string? id)
         {
-            var adminDelete = _unitOfWork.Admin.Get(x => x.Id == id);
+            var adminDelete = (AppUser) _userManager.Users.ToList().Select(X => X.Id.Equals(id));
 
             if (adminDelete == null)
-                return Json(new { success = false, message = "Error deleting the Admin" });
+                return Json(new { success = false, message = "Error deleting the AppUser" });
 
-            _unitOfWork.Admin.Remove(adminDelete);
-            _unitOfWork.Save();
+            _userManager.DeleteAsync(adminDelete);
 
-            return Json(new { success = true, message = "Admin deleted successfully" });
+            return Json(new { success = true, message = "AppUser deleted successfully" });
 
         }
         #endregion

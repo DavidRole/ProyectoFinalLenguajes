@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProyectoFinalLenguajes.Data.Repository.Interface;
 using ProyectoFinalLenguajes.Models;
+using ProyectoFinalLenguajes.Utilities;
 
 namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
 {
     [Area("Admins")]
+    [Authorize(Roles = StaticValues.RoleAdmin)]
     public class DishController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

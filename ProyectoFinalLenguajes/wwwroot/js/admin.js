@@ -10,7 +10,7 @@ function loadDataTable() {
             "url": "/Admins/Admin/GetAll"
         },
         "columns": [
-            { "data": "name", width: "20%" },
+            { "data": "firstname", width: "20%" },
             { "data": "email", width: "50%" },
             {
                 "data": "id",
