@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ProyectoFinalLenguajes.Data;
 using ProyectoFinalLenguajes.Data.Repository;
 using ProyectoFinalLenguajes.Data.Repository.Interface;
+using ProyectoFinalLenguajes.Models;
 using ProyectoFinalLenguajes.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -57,7 +58,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
