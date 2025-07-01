@@ -8,7 +8,7 @@ using ProyectoFinalLenguajes.Utilities;
 namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
 {
     [Area("Admins")]
-    //[Authorize(Roles = StaticValues.RoleAdmin)]
+    [Authorize(Roles = StaticValues.RoleAdmin)]
     public class AdminController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;

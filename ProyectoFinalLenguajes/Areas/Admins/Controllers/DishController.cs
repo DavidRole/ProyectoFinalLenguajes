@@ -7,7 +7,7 @@ using ProyectoFinalLenguajes.Utilities;
 namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
 {
     [Area("Admins")]
-    //[Authorize(Roles = StaticValues.RoleAdmin)]
+    [Authorize(Roles = StaticValues.RoleAdmin)]
     public class DishController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
