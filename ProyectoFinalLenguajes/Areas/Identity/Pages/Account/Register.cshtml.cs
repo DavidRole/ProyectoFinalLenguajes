@@ -25,6 +25,7 @@ using System.Threading.Tasks;
 
 namespace ProyectoFinalLenguajes.Areas.Identity.Pages.Account
 {
+    
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -172,7 +173,7 @@ namespace ProyectoFinalLenguajes.Areas.Identity.Pages.Account
                         await _userManager.AddToRoleAsync(user, Input.Role);
                     }
                     {
-                        await _userManager.AddToRoleAsync(user, Utilities.StaticValues.RoleCustomer);
+                        await _userManager.AddToRoleAsync(user, StaticValues.RoleCustomer);
                     }
 
                     var userId = await _userManager.GetUserIdAsync(user);
