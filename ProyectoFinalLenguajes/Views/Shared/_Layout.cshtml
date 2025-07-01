@@ -1,10 +1,11 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using ProyectoFinalLenguajes.Utilities
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ProyectoFinalLenguajes</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ProyectoFinalLenguajes.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -17,7 +18,7 @@
     <header>
         <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
             <div class="container-fluid">
-                <a class="navbar-brand text-info fw-bolder" asp-area="" asp-controller="Home" asp-action="Index">ProyectoFinalLenguajes</a>
+                <a class="navbar-brand text-light fw-bolder" asp-area="" asp-controller="Home" asp-action="Index">ProyectoFinalLenguajes</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -25,28 +26,38 @@
                 <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-info" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-info" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Users Management</a>
-                            <div class="dropdown-menu">
-                                <a class="nav-link text-info" asp-area="Admins" asp-controller="Admin" asp-action="Index">Admins</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-info" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Service Management</a>
-                            <div class="dropdown-menu">
-                                <a class="nav-link text-info" asp-area="Admins" asp-controller="Dish" asp-action="Index">Dishes</a>
-                            </div>
-                        </li>
+                        @if (User.IsInRole(StaticValues.RoleAdmin))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Users Management</a>
+                                <div class="dropdown-menu">
+                                    <a class="nav-link text-light" asp-area="Admins" asp-controller="Admin" asp-action="Index">Admins</a>
+                                    <a class="nav-link text-light" id="register" asp-area="Identity" asp-page="/Account/Register">Register New User</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Service Management</a>
+                                <div class="dropdown-menu">
+                                    <a class="nav-link text-light" asp-area="Admins" asp-controller="Dish" asp-action="Index">Dishes</a>
+                                </div>
+                            </li>
+                        }
+                        else if (User.IsInRole(StaticValues.RoleCook))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="Cook" asp-controller="Order" asp-action="Index">Orders</a>
+                            </li>
+                        }
                     </ul>
                     <div>
-                        <h3>
-                            <a class="nav-link" asp-area="Kitchen" asp-controller="Home" asp-action="Index">
-                                <i class="bi bi-person-circle" style="height: 60px; width: 60px"></i>
-                            </a>
-                        </h3>
+                        <partial name="_LoginPartial" />
+                    </div>
+                    <div class="btn-group ms-4 me-2">
+                        <button class="btn btn-link nav-link text-light" id="darkModeToggle" title="Toggle dark mode">
+                            <i class="bi bi-moon-stars-fill"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -60,7 +71,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer mt-auto bg-body">
         <div class="container">
             &copy; 2025 - ProyectoFinalLenguajes - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>

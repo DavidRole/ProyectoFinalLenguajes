@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProyectoFinalLenguajes.Data.Repository.Interface;
 using ProyectoFinalLenguajes.Models;
+using ProyectoFinalLenguajes.Utilities;
 
 namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
 {
     [Area("Admins")]
+    [Authorize(Roles = StaticValues.RoleAdmin)]
     public class DishController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -22,7 +25,7 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
         public IActionResult Upsert(int id)
         {
             Dish dish = new Dish();
-            if (id == 0 || id == null)
+            if (id == 0)
             {
                 return View(dish);
             }

@@ -19,7 +19,7 @@ namespace ProyectoFinalLenguajes.Models
         public double Precio { get; set; }
 
         [Required]
-        public byte[] Photo { get; set; }
+        public string ImageUrl { get; set; }
 
         [Required]
         public bool isAble { get; set; }
