@@ -25,7 +25,7 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
         public IActionResult Upsert(int id)
         {
             Dish dish = new Dish();
-            if (id == 0 || id == null)
+            if (id == 0)
             {
                 return View(dish);
             }
