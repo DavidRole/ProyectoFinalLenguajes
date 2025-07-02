@@ -17,9 +17,6 @@ namespace ProyectoFinalLenguajes.Models
         public string CustomerId { get; set; }
 
         [Required]
-        public string Name { get; set; }
-
-        [Required]
         public DateTime Date { get; set; }
 
         [Required]
