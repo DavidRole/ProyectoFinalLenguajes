@@ -80,7 +80,7 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
         #region API
         public async Task<IActionResult> GetAll()
         {
-            var customerList = await _userManager.GetUsersInRoleAsync("Customer");
+            var customerList = await _userManager.GetUsersInRoleAsync(StaticValues.RoleCustomer);
 
             return Json(new { data = customerList });
         }

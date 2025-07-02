@@ -80,8 +80,8 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
         #region API
         public async Task<IActionResult> GetAll()
         {
-            var admins = await _userManager.GetUsersInRoleAsync("Admin");
-            var cooks = await _userManager.GetUsersInRoleAsync("Cook");
+            var admins = await _userManager.GetUsersInRoleAsync(StaticValues.RoleAdmin);
+            var cooks = await _userManager.GetUsersInRoleAsync(StaticValues.RoleCook);
 
             var userList = admins.Union(cooks).ToList();
 

@@ -25,7 +25,7 @@ using System.Threading.Tasks;
 
 namespace ProyectoFinalLenguajes.Areas.Identity.Pages.Account
 {
-    
+
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<AppUser> _signInManager;
@@ -168,18 +168,28 @@ namespace ProyectoFinalLenguajes.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    if (!String.IsNullOrEmpty(Input.Role))
-                    {
-                        await _userManager.AddToRoleAsync(user, Input.Role);
-                    }
-                    {
-                        await _userManager.AddToRoleAsync(user, StaticValues.RoleCustomer);
-                    }
+
 
                     if (User.IsInRole("Admin"))
                     {
+                        if (string.IsNullOrEmpty(Input.Role))
+                        {
+                            ModelState.AddModelError("", "Debes escoger un rol para el usuario.");
+                            return Page();
+                        }
+
+                        await _userManager.AddToRoleAsync(user, Input.Role);
+
                         TempData["success"] = "Usuario creado correctamente.";
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToRoute(
+                                    routeName: null,
+                                    routeValues: new { area = "Admins", controller = "Admin", action = "Index" }
+                                );
+
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, StaticValues.RoleCustomer);
                     }
 
                     var userId = await _userManager.GetUserIdAsync(user);
