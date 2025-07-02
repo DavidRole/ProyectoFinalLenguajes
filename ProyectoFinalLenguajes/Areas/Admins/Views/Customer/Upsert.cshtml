@@ -1,0 +1,56 @@
+﻿@model AppUser
+
+<form method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="UserName" />
+    <div class="container p-3 mt-4 border">
+        <div class="container fluid">
+            <div class="row pb-2">
+                <h2 class="text-info">Edit Admin</h2>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" type="email" />
+
+                <span asp-validation-for="Email" class="text-bg-danger mx-1"></span>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="FirstName"></label>
+                <input asp-for="FirstName" class="form-control" />
+
+                <span asp-validation-for="FirstName" class="text-bg-danger mx-1"></span>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" class="form-control" />
+
+                <span asp-validation-for="LastName" class="text-bg-danger mx-1"></span>
+            </div>
+
+            <div class="mb-3 form-check form-switch">
+                <input asp-for="IsAble"
+                       class="form-check-input"
+                       type="checkbox" />
+                <label asp-for="IsAble"
+                       class="form-check-label"></label>
+                <span asp-validation-for="IsAble"
+                      class="text-danger mx-1"></span>
+            </div>
+            
+        </div>
+        <div class="container align-content-end">
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary" style="width: 100px">Save</button>
+                <a asp-controller="Admin" asp-action="Index" class="btn btn-outline-light">Back to List</a>
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts {
+    @{
+
+        <partial name="_ValidationScriptsPartial" />
+
+    }
+
+}

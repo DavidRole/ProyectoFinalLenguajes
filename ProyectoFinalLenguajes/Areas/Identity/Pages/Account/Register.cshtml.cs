@@ -176,6 +176,12 @@ namespace ProyectoFinalLenguajes.Areas.Identity.Pages.Account
                         await _userManager.AddToRoleAsync(user, StaticValues.RoleCustomer);
                     }
 
+                    if (User.IsInRole("Admin"))
+                    {
+                        TempData["success"] = "Usuario creado correctamente.";
+                        return RedirectToAction("Index", "Home");
+                    }
+
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
