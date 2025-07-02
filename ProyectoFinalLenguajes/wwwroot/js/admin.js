@@ -1,35 +1,35 @@
 ﻿var dataTable;
 
 $(document).ready(function () {
+    console.log("Loading Table");
     loadDataTable();
 });
 
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         ajax: {
-            "url": "/Admins/Admin/GetAll"
+            "url": "/Admins/Admin/GetAll",
+            dataSrc: "data"
         },
         "columns": [
-            { "data": "firstname", width: "20%" },
+            { "data": "firstName", width: "20%" },
             { "data": "email", width: "50%" },
+            { "data": "isAble", width: "10%" },
             {
-                "data": "id",
-                "render": function (data) {
+                data: 'id',
+                render: function (id) {
                     return `
-                        <div class="container btn-group" role="group">
-                            <a href="/Admins/Admin/Upsert/${data}" class="btn btn-outline-primary mx-2">
-                                <i class="bi bi-pencil-square"></i>
-                                Edit
-                            </a>
-
-                            <a onClick = Delete(${data}) class="btn btn-outline-danger mx-2">
-                                <i class="bi bi-trash3"></i>
-                                Delete
-                            </a>
-                        </div>
-                    `
+          <div class="btn-group" role="group">
+            <a href="/Admins/Admin/Upsert/${id}" class="btn btn-outline-primary">
+              <i class="bi bi-pencil-square"></i>
+            </a>
+            <a onclick="Delete('${id}')" class="btn btn-outline-danger">
+              <i class="bi bi-trash3"></i>
+            </a>
+          </div>`;
                 },
-                width: "30%"
+                orderable: false,
+                width: '20%'
             }
         ]
     });

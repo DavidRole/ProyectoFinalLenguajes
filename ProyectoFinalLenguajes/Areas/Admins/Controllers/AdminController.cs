@@ -11,8 +11,8 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
     [Authorize(Roles = StaticValues.RoleAdmin)]
     public class AdminController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        public AdminController(UserManager<IdentityUser> uow)
+        private readonly UserManager<AppUser> _userManager;
+        public AdminController(UserManager<AppUser> uow)
         {
             _userManager = uow;
         }
@@ -26,57 +26,71 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
         public IActionResult Upsert(string? id)
         {
 
-            AppUser admin = new AppUser();
+            AppUser user = new AppUser();
 
             if (String.IsNullOrEmpty(id))
             {
-                return View(admin);
+                return View(user);
             }
 
-            admin = (AppUser)_userManager.Users.ToList().Select(X => X.Id.Equals(id));
+            user = _userManager.Users.FirstOrDefault(u => u.Id == id);
 
-            if (admin == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(admin);
+            return View(user);
         }
 
         [HttpPost]
-        public IActionResult Upsert(AppUser admin)
+        public async Task<IActionResult> Upsert(AppUser user)
         {
             if (ModelState.IsValid)
             {
-                if (!String.IsNullOrEmpty(admin.Id))
-                {
-                    _userManager.UpdateAsync(admin);
+                var existing = await _userManager.FindByIdAsync(user.Id);
+                if (existing == null) return NotFound();
 
-                    TempData["success"] = "Action Completed successfully";
-                    return RedirectToAction("Index");
+                existing.FirstName = user.FirstName;
+                existing.Email = user.Email;
+                existing.IsAble = user.IsAble;
+                // …and so on for whatever you allow to change
+
+                var result = await _userManager.UpdateAsync(existing);
+
+                if (result.Succeeded)
+                {
+                    TempData["success"] = "Admin updated successfully";
+                    return RedirectToAction(nameof(Index));
                 }
-                TempData["error"] = "The action couldn't be resolved";
-                return View(admin);
+
+                
+                foreach (var e in result.Errors)
+                {
+                    ModelState.AddModelError("", e.Description);
+                }
+
+                TempData["error"] = "Failed to update admin";
             }
-            TempData["error"] = "The action couldn't be resolved";
+            TempData["error"] = "The action couldn't be resolved, model invalid";
             return View();
         }
 
         #region API
         public IActionResult GetAll()
         {
-            var adminList = _userManager.Users.ToList();
-            return Json(new { data = adminList });
+            var userList = _userManager.Users.ToList();
+            return Json(new { data = userList });
         }
 
         public IActionResult Delete(string? id)
         {
-            var adminDelete = (AppUser) _userManager.Users.ToList().Select(X => X.Id.Equals(id));
+            var userDelete = (AppUser) _userManager.Users.ToList().Select(X => X.Id.Equals(id));
 
-            if (adminDelete == null)
+            if (userDelete == null)
                 return Json(new { success = false, message = "Error deleting the AppUser" });
 
-            _userManager.DeleteAsync(adminDelete);
+            _userManager.DeleteAsync(userDelete);
 
             return Json(new { success = true, message = "AppUser deleted successfully" });
 
