@@ -16,10 +16,10 @@ namespace ProyectoFinalLenguajes.Models
         public string Description { get; set; }
 
         [Required]
-        public double Precio { get; set; }
+        public double Price { get; set; }
 
-        [Required]
-        public string ImageUrl { get; set; }
+        
+        public string? ImageUrl { get; set; }
 
         [Required]
         public bool isAble { get; set; }

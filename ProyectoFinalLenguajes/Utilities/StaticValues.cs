@@ -9,9 +9,12 @@
 
 
         // Valores para Entregas 
-        public const String ActiveOrder = "Active";
-        public const String DelioveredOrder = "Delivered";
-        public const String NulledOrder = "Nulled";
+        public const string ActiveOrder = "Active";
+        public const string DelioveredOrder = "Delivered";
+        public const string NulledOrder = "Nulled";
 
+
+        //
+        public const string DefaultImage = "noImageAvailable.jpg";
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using ProyectoFinalLenguajes.Data.Repository.Interface;
 using ProyectoFinalLenguajes.Models;
@@ -7,12 +8,15 @@ using ProyectoFinalLenguajes.Utilities;
 namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
 {
     [Area("Admins")]
-    [Authorize(Roles = StaticValues.RoleAdmin)]
+    //[Authorize(Roles = StaticValues.RoleAdmin)]
     public class DishController : Controller
     {
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IUnitOfWork _unitOfWork;
-        public DishController(IUnitOfWork unitOfWork)
+
+        public DishController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
+            _webHostEnvironment = webHostEnvironment;
             _unitOfWork = unitOfWork;
         }
 
@@ -40,10 +44,42 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
         }
 
         [HttpPost]
-        public IActionResult Upsert(Dish dish)
+        public IActionResult Upsert(Dish dish, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {
+
+                    string wwwRootPath = _webHostEnvironment.WebRootPath;
+                    string fileName = Guid.NewGuid().ToString();
+                    string extension = Path.GetExtension(file.FileName);
+                    var uploads = Path.Combine(wwwRootPath, @"images\dishes");
+
+
+                    if (dish.ImageUrl != null)
+                    {
+
+                        var oldImageUrl = Path.Combine(wwwRootPath, dish.ImageUrl);
+
+                        if (oldImageUrl != Path.Combine(uploads, StaticValues.DefaultImage))
+                            if (System.IO.File.Exists(oldImageUrl))
+                                System.IO.File.Delete(oldImageUrl);
+
+                    }
+
+                    using (var fileStream = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    dish.ImageUrl = (@"images\dishes\" + fileName + extension).Replace("\\", "/");
+                }
+                else if(dish.ImageUrl == null) 
+                    dish.ImageUrl = (@"images\dishes\" + StaticValues.DefaultImage).Replace("\\", "/");
+
+
+
                 if (dish.Id == 0)
                 {
                     _unitOfWork.Dish.Add(dish);
@@ -64,7 +100,7 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
         public IActionResult GetAll()
         {
             var dishList = _unitOfWork.Dish.GetAll();
-            return Json( new {data = dishList});
+            return Json(new { data = dishList });
         }
 
         public IActionResult Delete(int? id)
