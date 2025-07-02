@@ -10,7 +10,7 @@ function loadDataTable() {
             "url": "/Admins/Dish/GetAll"
         },
         "columns": [
-            { "data": "Name", width: "50%" },
+            { "data": "name", width: "50%" },
             { "data": "isAble", width: "20%" },
             {
                 "data": "id",
