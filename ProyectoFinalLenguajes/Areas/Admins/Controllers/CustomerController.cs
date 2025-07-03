@@ -10,10 +10,10 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
 {
     [Area("Admins")]
     [Authorize(Roles = StaticValues.RoleAdmin)]
-    public class AdminController : Controller
+    public class CustomerController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
-        public AdminController(UserManager<AppUser> uow)
+        public CustomerController(UserManager<AppUser> uow)
         {
             _userManager = uow;
         }
@@ -61,17 +61,17 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
 
                 if (result.Succeeded)
                 {
-                    TempData["success"] = "Admin updated successfully";
-                    return RedirectToAction(nameof(Index));
+                    TempData["success"] = "Customer updated successfully";
+                    return RedirectToAction("Index");
                 }
 
-
+                
                 foreach (var e in result.Errors)
                 {
                     ModelState.AddModelError("", e.Description);
                 }
 
-                TempData["error"] = "Failed to update admin";
+                TempData["error"] = "Failed to update customer";
             }
             TempData["error"] = "The action couldn't be resolved, model invalid";
             return View();
@@ -80,12 +80,9 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
         #region API
         public async Task<IActionResult> GetAll()
         {
-            var admins = await _userManager.GetUsersInRoleAsync(StaticValues.RoleAdmin);
-            var cooks = await _userManager.GetUsersInRoleAsync(StaticValues.RoleCook);
+            var customerList = await _userManager.GetUsersInRoleAsync(StaticValues.RoleCustomer);
 
-            var userList = admins.Union(cooks).ToList();
-
-            return Json(new { data = userList });
+            return Json(new { data = customerList });
         }
 
         public async Task<IActionResult> Delete(string? id)

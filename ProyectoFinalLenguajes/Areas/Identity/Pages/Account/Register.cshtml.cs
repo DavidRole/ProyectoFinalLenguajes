@@ -25,21 +25,21 @@ using System.Threading.Tasks;
 
 namespace ProyectoFinalLenguajes.Areas.Identity.Pages.Account
 {
-    
+
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IUserStore<IdentityUser> _userStore;
-        private readonly IUserEmailStore<IdentityUser> _emailStore;
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IUserStore<AppUser> _userStore;
+        private readonly IUserEmailStore<AppUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            IUserStore<IdentityUser> userStore,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<AppUser> userManager,
+            IUserStore<AppUser> userStore,
+            SignInManager<AppUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager)
@@ -168,10 +168,26 @@ namespace ProyectoFinalLenguajes.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    if (!String.IsNullOrEmpty(Input.Role))
+
+
+                    if (User.IsInRole("Admin"))
                     {
+                        if (string.IsNullOrEmpty(Input.Role))
+                        {
+                            ModelState.AddModelError("", "Debes escoger un rol para el usuario.");
+                            return Page();
+                        }
+
                         await _userManager.AddToRoleAsync(user, Input.Role);
+
+                        TempData["success"] = "Usuario creado correctamente.";
+                        return RedirectToRoute(
+                                    routeName: null,
+                                    routeValues: new { area = "Admins", controller = "Admin", action = "Index" }
+                                );
+
                     }
+                    else
                     {
                         await _userManager.AddToRoleAsync(user, StaticValues.RoleCustomer);
                     }
@@ -222,13 +238,13 @@ namespace ProyectoFinalLenguajes.Areas.Identity.Pages.Account
             }
         }
 
-        private IUserEmailStore<IdentityUser> GetEmailStore()
+        private IUserEmailStore<AppUser> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<IdentityUser>)_userStore;
+            return (IUserEmailStore<AppUser>)_userStore;
         }
     }
 }

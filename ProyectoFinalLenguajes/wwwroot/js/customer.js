@@ -1,4 +1,4 @@
-﻿var dataTable;
+var dataTable;
 
 $(document).ready(function () {
     console.log("Loading Table");
@@ -8,7 +8,7 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         ajax: {
-            "url": "/Admins/Admin/GetAll",
+            "url": "/Admins/Customer/GetAll",
             dataSrc: "data"
         },
         "columns": [
@@ -20,14 +20,14 @@ function loadDataTable() {
                 data: 'id',
                 render: function (id) {
                     return `
-          <div class="btn-group" role="group">
-            <a href="/Admins/Admin/Upsert/${id}" class="btn btn-outline-primary">
-              <i class="bi bi-pencil-square"></i>
-            </a>
-            <a onclick="Delete('${id}')" class="btn btn-outline-danger">
-              <i class="bi bi-trash3"></i>
-            </a>
-          </div>`;
+                      <div class="btn-group" role="group">
+                        <a href="/Admins/Customer/Upsert/${id}" class="btn btn-outline-primary">
+                          <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <a onclick="Delete('${id}')" class="btn btn-outline-danger">
+                          <i class="bi bi-trash3"></i>
+                        </a>
+                      </div>`;
                 },
                 orderable: false,
                 width: '20%'
@@ -50,7 +50,7 @@ function Delete(_id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: "/Admins/Admin/delete/" + _id,
+                url: "/Admins/Customer/delete/" + _id,
                 type: "DELETE",
                 success: function (data) {
                     if (data.success) {
