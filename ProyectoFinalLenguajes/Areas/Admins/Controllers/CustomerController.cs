@@ -84,6 +84,22 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
 
             return Json(new { data = customerList });
         }
+
+        public async Task<IActionResult> Delete(string? id)
+        {
+            var existing = await _userManager.FindByIdAsync(id);
+            if (existing == null)
+                return Json(new { success = false, message = "Error deleting the AppUser" });
+
+            var result = await _userManager.DeleteAsync(existing);
+
+            if (result.Succeeded)
+                return Json(new { success = true, message = "AppUser deleted successfully" });
+            else
+                return Json(new { success = false, message = "Error deleting the AppUser" });
+
+
+        }
         #endregion
     }
 }
