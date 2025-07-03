@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProyectoFinalLenguajes.Data.Repository.Interface;
 using ProyectoFinalLenguajes.Models;
+using ProyectoFinalLenguajes.Utilities;
 
 namespace ProyectoFinalLenguajes.Areas.Kitchen.Controllers
 {
     [Area("Kitchen")]
+
     public class OrderController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
