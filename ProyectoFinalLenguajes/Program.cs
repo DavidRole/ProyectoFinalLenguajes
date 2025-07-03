@@ -1,11 +1,15 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ProyectoFinalLenguajes.Data;
 using ProyectoFinalLenguajes.Data.Repository;
 using ProyectoFinalLenguajes.Data.Repository.Interface;
 using ProyectoFinalLenguajes.Models;
 using ProyectoFinalLenguajes.Utilities;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +22,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
 builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = $"/Identity/Account/Login";
@@ -41,7 +46,31 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddAuthentication()
+  .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtOpts =>
+  {
+      jwtOpts.SaveToken = true;
+      jwtOpts.RequireHttpsMetadata = true;
+      jwtOpts.TokenValidationParameters = new TokenValidationParameters
+      {
+          ValidateIssuer = true,
+          ValidateAudience = true,
+          ValidateLifetime = true,
+          ValidateIssuerSigningKey = true,
+          ValidIssuer = builder.Configuration["Jwt:Issuer"],
+          ValidAudience = builder.Configuration["Jwt:Audience"],
+          IssuerSigningKey = new SymmetricSecurityKey(
+                                     Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+      };
+  });
+
+builder.Services.AddAuthorization();
+builder.Services.AddControllers();    
+builder.Services.AddRazorPages();
+
 var app = builder.Build();
+if (app.Environment.IsDevelopment())
+    app.UseDeveloperExceptionPage();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -60,6 +89,9 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllers();
+
 app.MapRazorPages();
 
 app.MapControllerRoute(
