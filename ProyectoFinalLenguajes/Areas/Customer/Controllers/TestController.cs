@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
-using ProyectoFinalLenguajes.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ProyectoFinalLenguajes.Utilities;
 using ProyectoFinalLenguajes.Data.Repository.Interface;
+using ProyectoFinalLenguajes.Models;
+using ProyectoFinalLenguajes.Utilities;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace ProyectoFinalLenguajes.Areas.Customer.Controllers
 {
@@ -39,7 +41,12 @@ namespace ProyectoFinalLenguajes.Areas.Customer.Controllers
                 return BadRequest("Debe enviar al menos un plato con cantidad.");
 
             // 1. Obtener el usuario autenticado
-            var user = await _userManager.GetUserAsync(User);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized();
+
+            var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 return Unauthorized();
 
@@ -48,7 +55,7 @@ namespace ProyectoFinalLenguajes.Areas.Customer.Controllers
             {
                 CustomerId = user.Id,
                 Date = DateTime.UtcNow,
-                Status = model.Status ?? "Pending"
+                Status = model.Status
             };
 
             // 3. Agregar detalles
@@ -76,11 +83,19 @@ namespace ProyectoFinalLenguajes.Areas.Customer.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var orders = _unitOfwork.Order
-                .GetAll("OrderDishes,Dish,Customer"
+            var order = _unitOfwork.Order
+                .Get(o => o.Id == id, "Customer"
                 );
 
-            var order = orders.Where(o => o.Id == id);
+            var orderDetails = _unitOfwork.OrderDetail.GetAll("Dish");
+
+            ICollection<OrderDetail> details = new HashSet<OrderDetail>();
+
+            foreach (var item in orderDetails.Where(o => o.OrderId == id)){
+                details.Add(item);
+            }
+
+            order.OrderDishes = details;
 
             if (order == null) return NotFound();
             return Ok(order);

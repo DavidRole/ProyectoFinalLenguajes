@@ -32,7 +32,6 @@ namespace ProyectoFinalLenguajes.Data.Repository
                 }
             }
 
-
             query = query.Where(filter);
             return query.FirstOrDefault();
         }

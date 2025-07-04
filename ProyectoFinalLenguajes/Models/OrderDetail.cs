@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.InteropServices.Marshalling;
+using System.Text.Json.Serialization;
 
 namespace ProyectoFinalLenguajes.Models
 {
@@ -20,8 +21,9 @@ namespace ProyectoFinalLenguajes.Models
         [Required]
         public int DishId { get; set; }
 
+        [JsonIgnore]
         [ForeignKey("OrderId")]
-        public virtual Order Order { get; set; }
+        public virtual Order Order { get ; set; }
 
         [ForeignKey("DishId")]
         public virtual Dish Dish { get; set; }

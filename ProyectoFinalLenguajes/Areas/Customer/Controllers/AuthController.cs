@@ -40,12 +40,12 @@ namespace ProyectoFinalLenguajes.Areas.Customer.Controllers
             if (!roles.Contains("Customer"))
                 return Forbid("Only customers may login via API");
 
-            
+
             var claims = new List<Claim>
-            {
-              new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-              new Claim(ClaimTypes.NameIdentifier, user.Id),
-              new Claim(ClaimTypes.Role, "Customer")
+{
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id),          // sub = Id
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+                new Claim(ClaimTypes.Role, "Customer")
             };
 
             var key = new SymmetricSecurityKey(
