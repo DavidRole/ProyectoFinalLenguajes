@@ -62,7 +62,7 @@ namespace ProyectoFinalLenguajes.Areas.Kitchen.Controllers
         #region API
         public IActionResult GetAll()
         {
-            var orderList = _unitOfWork.Order.GetAll("OrderDetails, Customer");
+            var orderList = _unitOfWork.Order.GetAll("Customer");
 
             return Json(new {data = orderList});
         }
