@@ -7,5 +7,7 @@ namespace ProyectoFinalLenguajes.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public bool IsAble {  get; set; }
+
+        public string Address { get; set; }
     }
 }
