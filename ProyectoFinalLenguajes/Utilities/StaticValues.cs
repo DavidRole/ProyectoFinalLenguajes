@@ -9,10 +9,12 @@
 
 
         // Valores para Entregas 
-        public const string ActiveOrder = "Active";
-        public const string DelioveredOrder = "Delivered";
+        public const string OnTimeOrder = "On Time";
+        public const string OvertimeOrder = "Overtime";
+        public const string LateOrder = "Late AF";
         public const string NulledOrder = "Nulled";
-
+        public const string DeliveredOrder = "Delivered";
+        
 
         //
         public const string DefaultImage = "noImageAvailable.jpg";

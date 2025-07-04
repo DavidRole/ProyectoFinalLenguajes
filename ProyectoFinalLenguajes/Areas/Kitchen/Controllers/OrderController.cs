@@ -23,6 +23,7 @@ namespace ProyectoFinalLenguajes.Areas.Kitchen.Controllers
             return View();
         }
 
+
         [HttpGet]
         public IActionResult Upsert(int Id)
         {
@@ -66,9 +67,29 @@ namespace ProyectoFinalLenguajes.Areas.Kitchen.Controllers
         #region API
         public IActionResult GetAll()
         {
-            var orderList = _unitOfWork.Order.GetAll("Customer");
+            var orderList = _unitOfWork.Order.GetAll("Customer,OrderDishes.Dish");
+            var activeOrders = orderList.Where(o => !o.Status.Equals(StaticValues.NulledOrder) && !o.Status.Equals(StaticValues.DeliveredOrder));
+            return Json(new { data = activeOrders });
+        }
 
-            return Json(new {data = orderList});
+        [HttpPut]
+        public IActionResult Upsert(int id, string status)
+        {
+
+            if (id != 0)
+            {
+                var order = _unitOfWork.Order.Get(o => o.Id == id);
+
+                if (order == null)
+                    return Json(new { success = false, message = "Error updating the order." });
+
+                order.Status = status;
+                _unitOfWork.Order.Update(order);
+            }
+            _unitOfWork.Save();
+            
+            return Json(new { success = true, message = "Order updated successfully" });
+
         }
         #endregion
     }
