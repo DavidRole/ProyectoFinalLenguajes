@@ -132,7 +132,7 @@ namespace ProyectoFinalLenguajes.Areas.Customer.Controllers
 
             var claims = new List<Claim>
 {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id),          // sub = Id
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
                 new Claim(ClaimTypes.Role, "Customer")
             };
