@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using ProyectoFinalLenguajes.Data.Repository.Interface;
 using ProyectoFinalLenguajes.Models;
 using ProyectoFinalLenguajes.Utilities;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace ProyectoFinalLenguajes.Areas.Customer.Controllers
@@ -13,34 +12,23 @@ namespace ProyectoFinalLenguajes.Areas.Customer.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Customer")]
     [ApiController]
     [Route("api/[controller]")]
-    public class TestController : Controller
+    public class OrderController : Controller
     {
         public readonly IUnitOfWork _unitOfwork;
         private readonly UserManager<AppUser> _userManager;
-
-        public TestController(IUnitOfWork unitOfwork, UserManager<AppUser> userManager)
+        public OrderController(IUnitOfWork unitOfwork, UserManager<AppUser> userManager)
         {
-            _unitOfwork = unitOfwork; 
+            _unitOfwork = unitOfwork;
             _userManager = userManager;
         }
-        
 
-        [HttpGet("dishes")]
-        public IActionResult GetEnabledDishes()
-        {
-            var allDishes = _unitOfwork.Dish.GetAll();
-            var enabledDishes = allDishes.Where(x => x.isAble);
-            return Ok(enabledDishes);
-        }
-
-        
-        [HttpPost("order")]
-        public async Task<IActionResult> AddOrder([FromBody] AddOrderModel model)
+        [HttpPost]
+        public async Task<IActionResult> Index([FromBody] AddOrderModel model)
         {
             if (model == null || model.Items == null || !model.Items.Any())
                 return BadRequest("Debe enviar al menos un plato con cantidad.");
 
-            
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (string.IsNullOrEmpty(userId))
@@ -50,7 +38,7 @@ namespace ProyectoFinalLenguajes.Areas.Customer.Controllers
             if (user == null)
                 return Unauthorized();
 
-            
+
             var order = new Order
             {
                 CustomerId = user.Id,
@@ -58,7 +46,7 @@ namespace ProyectoFinalLenguajes.Areas.Customer.Controllers
                 Status = model.Status
             };
 
-            
+
             foreach (var item in model.Items)
             {
                 order.OrderDishes.Add(new OrderDetail
@@ -68,11 +56,11 @@ namespace ProyectoFinalLenguajes.Areas.Customer.Controllers
                 });
             }
 
-            
+
             _unitOfwork.Order.Add(order);
             _unitOfwork.Save();
 
-            
+
             return CreatedAtAction(
                 nameof(GetById),
                 new { id = order.Id },
@@ -83,23 +71,25 @@ namespace ProyectoFinalLenguajes.Areas.Customer.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var order = _unitOfwork.Order
-                .Get(o => o.Id == id, "Customer"
-                );
-
-            var orderDetails = _unitOfwork.OrderDetail.GetAll("Dish");
-
-            ICollection<OrderDetail> details = new HashSet<OrderDetail>();
-
-            foreach (var item in orderDetails.Where(o => o.OrderId == id)){
-                details.Add(item);
-            }
-
-            order.OrderDishes = details;
+            var order = _unitOfwork.Order.Get(o => o.Id == id,"Customer,OrderDishes.Dish");
+            
 
             if (order == null) return NotFound();
             return Ok(order);
         }
+
+        [HttpGet("customer/{id}")]
+        public async Task<IActionResult> GetByCustomer(string id)
+        {
+            var all = _unitOfwork.Order.GetAll("Customer,OrderDishes.Dish");
+            var filtered = all.Where(o => o.CustomerId == id).ToList();
+
+            if (filtered.Count == 0)
+                return NotFound();
+
+            return Ok(filtered);
+        }
+
 
         public class AddOrderModel
         {
@@ -112,6 +102,5 @@ namespace ProyectoFinalLenguajes.Areas.Customer.Controllers
             public int DishId { get; set; }
             public int Quantity { get; set; }
         }
-
     }
 }

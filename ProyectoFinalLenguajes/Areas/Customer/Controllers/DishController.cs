@@ -1,0 +1,27 @@
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ProyectoFinalLenguajes.Data.Repository.Interface;
+
+namespace ProyectoFinalLenguajes.Areas.Customer.Controllers
+{
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Customer")]
+    [ApiController]
+    [Route("api/[controller]")]
+    public class DishController : Controller
+    {
+        public readonly IUnitOfWork _unitOfWork;
+        public DishController(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
+        [HttpGet]
+        public IActionResult GetEnabledDishes()
+        {
+            var allDishes = _unitOfWork.Dish.GetAll();
+            var enabledDishes = allDishes.Where(x => x.isAble);
+            return Ok(enabledDishes);
+        }
+    }
+}
