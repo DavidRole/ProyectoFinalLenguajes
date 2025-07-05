@@ -1,4 +1,6 @@
-﻿namespace ProyectoFinalLenguajes.Utilities
+﻿using System.Reflection.Metadata;
+
+namespace ProyectoFinalLenguajes.Utilities
 {
     public static class StaticValues
     {
@@ -14,6 +16,7 @@
         public const string LateOrder = "Late AF";
         public const string NulledOrder = "Nulled";
         public const string DeliveredOrder = "Delivered";
+        public const string ActiveOrder = "active";
         
         // Valores Imagenes
         public const string DefaultImage = "noImageAvailable.jpg";
