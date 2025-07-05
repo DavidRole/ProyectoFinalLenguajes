@@ -104,7 +104,7 @@ namespace ProyectoFinalLenguajes.Areas.Customer.Controllers
         public class AddOrderModel
         {
             public List<AddOrderItemModel> Items { get; set; }
-            public string? Status { get; set; } = StaticValues.ActiveOrder;
+            public string? Status { get; set; } = StaticValues.OnTimeOrder;
         }
 
         public class AddOrderItemModel

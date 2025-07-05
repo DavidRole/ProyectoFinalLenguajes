@@ -1,0 +1,36 @@
+﻿
+@model List<Order>
+
+<div>
+
+    <div class="container">
+        <div class="row pt-4">
+            <div class="col-6">
+                <h2 class="text-primary">Order List</h2>
+            </div>
+
+            @* <div class="col-6 text-end">
+                <a asp-controller="Order" asp-action="Upsert" class="btn btn-outline-primary m-1">
+                    <i class="bi bi-plus-circle m-1"></i>
+                    New Order
+                </a>
+            </div> *@
+        </div>
+    </div>
+
+    <table class="table table-striped" id="tblData">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Ordered Dishes</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/adminOrder.js" asp-append-version="true"></script>
+}

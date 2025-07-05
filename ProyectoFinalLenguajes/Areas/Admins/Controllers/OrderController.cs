@@ -5,9 +5,9 @@ using ProyectoFinalLenguajes.Data.Repository.Interface;
 using ProyectoFinalLenguajes.Models;
 using ProyectoFinalLenguajes.Utilities;
 
-namespace ProyectoFinalLenguajes.Areas.Kitchen.Controllers
+namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
 {
-    [Area("Kitchen")]
+    [Area("Admins")]
 
     public class OrderController : Controller
     {
@@ -68,11 +68,11 @@ namespace ProyectoFinalLenguajes.Areas.Kitchen.Controllers
         public IActionResult GetAll()
         {
             var orderList = _unitOfWork.Order.GetAll("Customer,OrderDishes.Dish");
-            var activeOrders = orderList.Where(o => !o.Status.Equals(StaticValues.NulledOrder) && !o.Status.Equals(StaticValues.DeliveredOrder));
-            return Json(new { data = activeOrders });
+            
+            return Json(new { data = orderList });
         }
 
-        [HttpPost]
+        [HttpPut]
         public IActionResult Update(int id, string status)
         {
 
@@ -87,7 +87,7 @@ namespace ProyectoFinalLenguajes.Areas.Kitchen.Controllers
                 _unitOfWork.Order.Update(order);
             }
             _unitOfWork.Save();
-            
+
             return Json(new { success = true, message = "Order updated successfully" });
 
         }
