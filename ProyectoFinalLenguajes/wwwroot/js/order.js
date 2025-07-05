@@ -2,15 +2,23 @@
 
 $(document).ready(function () {
     loadDataTable();
-    setInterval(dataTable.ajax.reload, 6000);
 });
 
 function loadDataTable() {
-    dataTable = $('#tblData').DataTable({
+    var $tbl = $('#tblData');
+
+    var STATE_ON_TIME = $tbl.data('onTime');
+    var STATE_OVERTIME = $tbl.data('overtime');
+    var STATE_LATE = $tbl.data('late');
+    var STATE_DELIVERED = $tbl.data('delivered');
+    var STATE_NULLED = $tbl.data('nulled');
+
+
+    dataTable = $tbl.DataTable({
         ajax: {
             "url": "/Kitchen/Order/GetAll"
         },
-        lengthMenu: [5, 10, 20, 50], 
+        lengthMenu: [5, 10, 20, 50],
         "columns": [
             { "data": "id", width: "5%" },
             {
@@ -33,29 +41,7 @@ function loadDataTable() {
                 },
                 width: "40%"
             },
-            {
-                data: null,
-                render: function (_data, _type, row) {
-                    const status = row.status;
-                    const created = new Date(row.date);
-                    const now = new Date();
-                    const diffMs = now - created;
-                    const diffMin = Math.floor(diffMs / 1000 / 60);
-
-                    
-                    let cls = "";
-                    if (diffMin <= 7) {
-                        cls = 'text-bg-success';
-                    } else if (diffMin > 7 && diffMin <= 14) {
-                        cls = 'text-bg-warning'
-                    } else if (diffMin > 14 ) {
-                        cls = 'text-bg-danger'
-                    }
-
-                    return `<span class="${cls}">${status}</span>`;
-                },
-                width: "10%"
-            },
+            { data: null, orderable: false, width: '10%', defaultContent: '' },
             {
                 "data": "id",
                 "render": function (data) {
@@ -70,8 +56,51 @@ function loadDataTable() {
                 orderable: false,
                 width: "5%"
             }
-        ]
+        ],
+        columnDefs: [{
+            targets: 3,
+            render: function (_data, _type, row) {
+                const created = new Date(row.date);
+                const diffMin = Math.floor((Date.now() - created) / 60000);
+
+                let cls;
+                if (diffMin < 5) {
+                    cls = 'badge bg-success';
+                }
+                else if (diffMin >= 5 && diffMin <=15) {
+                    cls = 'badge bg-warning text-dark';
+                    if (row.status != STATE_OVERTIME)
+                        updateStatus(row.id, STATE_OVERTIME);
+                }
+                else if (diffMin > 15) {
+                    cls = 'badge bg-danger';
+                    if (row.status != STATE_LATE)
+                        updateStatus(row.id, STATE_LATE);
+                }
+
+                return `<span class="${cls}">${row.status}</span>`;
+            }
+        }]
     });
-    
-    
+
+    setInterval(() => dataTable.ajax.reload(null, false), 6000);
+}
+
+function updateStatus(id, status) {
+    $.ajax({
+        url: `/Kitchen/Order/Update/${id}`,
+        type: 'POST',               
+        data: { status: status },
+        success: function (data) {
+            if (data.success) {
+                toastr.success(data.message);
+            } else {
+                toastr.error(data.message);
+            }
+
+        },
+        error: function () {
+            toastr.error("Error connecting to endpoint.");
+        }
+    });
 }

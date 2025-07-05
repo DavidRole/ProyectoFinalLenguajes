@@ -1,0 +1,48 @@
+﻿function loadDataTable() {
+    var $tbl = $('#tblData');
+    dataTable = $tbl.DataTable({
+        ajax: {
+            "url": "/Kitchen/Order/GetAll"
+        },
+        lengthMenu: [5, 10, 20, 50],
+        "columns": [
+            { "data": "id", width: "5%" },
+            {
+                "data": "customer.firstName",
+                "render": function (data) {
+                    return data ?? 'Sin nombre';
+                },
+                width: "20%"
+            },
+            {
+                "data": "orderDishes",
+                "render": function (data) {
+                    if (!Array.isArray(data)) return "Sin platos";
+
+                    return data.map(d => {
+                        const dishName = d.dish?.name ?? 'Desconocido';
+                        const quantity = d.quantity ?? 0;
+                        return `${dishName} x${quantity}`;
+                    }).join("<br>");
+                },
+                width: "40%"
+            },
+            {data: "date", width: "15%"},
+            { data: null, orderable: false, width: '10%', defaultContent: '' },
+            {
+                "data": "id",
+                "render": function (data) {
+                    return `
+                        <div class="container btn-group" role="group">
+                            <a href="/Kitchen/Order/Details/${data}" class="btn btn-outline-primary mx-2">
+                                <i class="bi bi-arrows-fullscreen"></i>
+                            </a>
+                        </div>
+                    `;
+                },
+                orderable: false,
+                width: "5%"
+            }
+        ],
+    });
+}
