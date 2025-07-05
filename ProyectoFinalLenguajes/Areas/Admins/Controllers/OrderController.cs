@@ -23,6 +23,26 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Details(int id) 
+        {
+            if (id == 0)
+            {
+                return NotFound(); 
+            }
+
+            var order = _unitOfWork.Order.Get(
+                o => o.Id == id, 
+                includeProperties: "Customer,OrderDishes.Dish" 
+            );
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return View(order);
+        }
 
         [HttpGet]
         public IActionResult Upsert(int Id)

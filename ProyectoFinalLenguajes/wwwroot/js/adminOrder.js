@@ -33,7 +33,21 @@ function loadDataTable() {
                 },
                 width: "40%"
             },
-            { data: "date", width: "15%" },
+            {
+                "data": "date",
+                "render": function (data) {
+                    const date = new Date(data);
+                    return date.toLocaleString('es-CR', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',     
+                        minute: '2-digit',    
+                    });
+                    
+                },
+                width: "15%"
+            },
             { data: null, orderable: false, width: '10%', defaultContent: '' },
             {
                 "data": "id",
