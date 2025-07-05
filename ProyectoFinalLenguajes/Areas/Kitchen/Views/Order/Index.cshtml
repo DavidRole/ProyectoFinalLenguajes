@@ -19,11 +19,11 @@
     </div>
 
     <table class="table table-striped" id="tblData"
-           data-on-time="@StaticValues.OnTimeOrder"
+           data-ontime="@StaticValues.OnTimeOrder"
            data-overtime="@StaticValues.OvertimeOrder"
            data-late="@StaticValues.LateOrder"
            data-delivered="@StaticValues.DeliveredOrder"
-           data-on-time="@StaticValues.NulledOrder">
+           data-nulled="@StaticValues.NulledOrder">
         <thead>
             <tr>
                 <th>Order ID</th>
@@ -35,6 +35,17 @@
         </thead>
     </table>
 
+    <div class="row w-100 justify-content-center">
+        <div class="card border-primary shadow-md rounded-4 p-4 mt-0" style="width:90%; max-width: 400px;">
+            <div class="card-body text-center">
+                <h4>Last order delivered:</h4>
+                <div id="lastOrder" class="input-group justify-content-center align-content-center">
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
 </div>
 
 @section Scripts{

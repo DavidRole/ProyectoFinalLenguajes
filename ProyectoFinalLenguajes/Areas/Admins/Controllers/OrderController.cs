@@ -68,8 +68,8 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
         public IActionResult GetAll()
         {
             var orderList = _unitOfWork.Order.GetAll("Customer,OrderDishes.Dish");
-            var activeOrders = orderList.Where(o => !o.Status.Equals(StaticValues.NulledOrder) && !o.Status.Equals(StaticValues.DeliveredOrder));
-            return Json(new { data = activeOrders });
+            
+            return Json(new { data = orderList });
         }
 
         [HttpPut]

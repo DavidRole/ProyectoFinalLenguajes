@@ -1,4 +1,4 @@
-﻿@using ProyectoFinalLenguajes.Utilities
+﻿
 @model List<Order>
 
 <div>
@@ -18,12 +18,7 @@
         </div>
     </div>
 
-    <table class="table table-striped" id="tblData"
-           data-on-time="@StaticValues.OnTimeOrder"
-           data-overtime="@StaticValues.OvertimeOrder"
-           data-late="@StaticValues.LateOrder"
-           data-delivered="@StaticValues.DeliveredOrder"
-           data-on-time="@StaticValues.NulledOrder">
+    <table class="table table-striped" id="tblData">
         <thead>
             <tr>
                 <th>Order ID</th>
@@ -34,7 +29,6 @@
             </tr>
         </thead>
     </table>
-
 </div>
 
 @section Scripts {

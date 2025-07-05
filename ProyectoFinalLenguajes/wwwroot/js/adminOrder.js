@@ -1,8 +1,14 @@
-﻿function loadDataTable() {
+﻿var datatable;
+
+$(document).ready(function () {
+    loadDataTable();
+});
+
+function loadDataTable() {
     var $tbl = $('#tblData');
     dataTable = $tbl.DataTable({
         ajax: {
-            "url": "/Kitchen/Order/GetAll"
+            "url": "/Admins/Order/GetAll"
         },
         lengthMenu: [5, 10, 20, 50],
         "columns": [
@@ -27,14 +33,14 @@
                 },
                 width: "40%"
             },
-            {data: "date", width: "15%"},
+            { data: "date", width: "15%" },
             { data: null, orderable: false, width: '10%', defaultContent: '' },
             {
                 "data": "id",
                 "render": function (data) {
                     return `
                         <div class="container btn-group" role="group">
-                            <a href="/Kitchen/Order/Details/${data}" class="btn btn-outline-primary mx-2">
+                            <a href="/Admins/Order/Details/${data}" class="btn btn-outline-primary mx-2">
                                 <i class="bi bi-arrows-fullscreen"></i>
                             </a>
                         </div>
