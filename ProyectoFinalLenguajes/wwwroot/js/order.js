@@ -78,6 +78,8 @@ function loadDataTable() {
                 let cls;
                 if (diffMin < 5) {
                     cls = 'badge bg-success';
+                    if (row.status != STATE_ON_TIME)
+                        updateStatus(row.id, STATE_ON_TIME);
                 }
                 else if (diffMin >= 5 && diffMin <= 15) {
                     cls = 'badge bg-warning text-dark';
