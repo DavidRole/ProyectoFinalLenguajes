@@ -54,8 +54,11 @@ function loadDataTable() {
                 "render": function (data) {
                     return `
                         <div class="container btn-group" role="group">
-                            <a href="/Admins/Order/Details/${data}" class="btn btn-outline-primary mx-2">
+                            <a href="/Admins/Order/Details/${data}" class="btn btn-outline-primary">
                                 <i class="bi bi-arrows-fullscreen"></i>
+                            </a>
+                            <a href="/Admins/Order/EditStatus/${data}" class="btn btn-outline-primary">
+                                <i class="bi bi-pencil-square"></i>
                             </a>
                         </div>
                     `;
