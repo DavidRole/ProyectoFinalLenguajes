@@ -1,0 +1,65 @@
+﻿@model ProyectoFinalLenguajes.Models.Order
+
+@{
+    ViewData["Title"] = "Editar Estado de Orden";
+    // Si pasaste una lista de estados desde el controlador, la recuperas aquí
+    var statusOptions = ViewBag.StatusOptions as SelectList;
+}
+
+<div class="border p-3 mt-4">
+    <div class="row pb-2">
+        <h2 class="text-primary">Editar Estado de la Orden #@Model.Id</h2>
+        <hr />
+    </div>
+
+
+    <form method="post" asp-action="EditStatus" asp-route-id="@Model.Id">
+        <input type="hidden" asp-for="Id" /> 
+    
+
+@*Necesario para saber qué orden estamos editando *@
+
+         @*Mostrar información básica de la orden (solo lectura) *@
+        <div class="mb-3">
+            <label class="form-label text-secondary">Fecha de la Orden:</label>
+            <p class="form-control-plaintext">@Model.Date.ToString("dd/MM/yyyy HH:mm")</p>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label text-secondary">Cliente:</label>
+            <p class="form-control-plaintext">@(Model.Customer?.FirstName ?? "N/A") @(Model.Customer?.LastName ?? "")</p>
+        </div>
+
+        <hr class="my-4" />
+
+       @* Campo para editar el estado *@
+        <div class="mb-3">
+            <label asp-for="Status" class="form-label">Nuevo Estado:</label>
+            @if (statusOptions != null)
+            {
+                <select asp-for="Status" asp-items="statusOptions" class="form-select">
+                    <option disabled selected>-- Seleccione un estado --</option>
+                </select>
+            }
+            else
+            {
+                <input asp-for="Status" class="form-control" readonly />  @*Fallback si no hay opciones *@
+                <p class="text-danger mt-1">No se pudieron cargar las opciones de estado.</p>
+            }
+            <span asp-validation-for="Status" class="text-danger mx-1"></span>
+        </div>
+
+        <hr class="my-4" />
+
+        <div class="d-flex justify-content-end gap-2">
+            <button type="submit" class="btn btn-primary" style="width: 100px">Guardar</button>
+            <a asp-area="Admins" asp-controller="Order" asp-action="Index" class="btn btn-outline-light">Back to List</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

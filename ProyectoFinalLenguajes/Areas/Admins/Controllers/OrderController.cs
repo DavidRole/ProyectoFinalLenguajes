@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ProyectoFinalLenguajes.Data.Repository.Interface;
 using ProyectoFinalLenguajes.Models;
 using ProyectoFinalLenguajes.Utilities;
@@ -24,6 +25,34 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
         }
 
         [HttpGet]
+        public IActionResult EditStatus(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+
+            var order = _unitOfWork.Order.Get(o => o.Id == id, includeProperties: "OrderDishes");
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            var statusOptions = new List<string>
+            {
+                StaticValues.OnTimeOrder,    // "On Time"
+                StaticValues.OvertimeOrder,  // "Overtime"
+                StaticValues.LateOrder,      // "Late AF"
+                StaticValues.DeliveredOrder, // "Delivered"
+            };
+
+            ViewBag.StatusOptions = new SelectList(statusOptions, order.Status); 
+
+            return View(order);
+        }
+
+        [HttpGet]
         public IActionResult Details(int id) 
         {
             if (id == 0)
@@ -42,6 +71,33 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
             }
 
             return View(order);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditStatus(int id, Order order) 
+        {
+
+            if (id != order.Id)
+            {
+                return BadRequest("Mismatched IDs.");
+            }
+
+            var orderFromDb = _unitOfWork.Order.Get(o => o.Id == order.Id);
+
+            if (orderFromDb == null)
+            {
+                TempData["error"] = "Order not found.";
+                return NotFound();
+            }
+
+            orderFromDb.Status = order.Status; 
+
+            _unitOfWork.Order.Update(orderFromDb);
+            _unitOfWork.Save();
+
+            TempData["Success"] = "Estado de la orden actualizado exitosamente.";
+            return RedirectToAction("Details", new { id = order.Id });
         }
 
         [HttpGet]
