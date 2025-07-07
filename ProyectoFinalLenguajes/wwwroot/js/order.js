@@ -9,10 +9,11 @@
 
 $(document).ready(function () {
     try {
-        setInterval(getMinutes(), 1000);
+        setInterval(getMinutes, 1000);
     } catch (e) {
         console.warn("Using fallback minute values", e);
     }
+
     loadDataTable();
 
     var lastOrder = document.getElementById("lastOrder");
@@ -28,9 +29,9 @@ function getMinutes() {
         type: "GET",
         dataType: "json",
         success: function (response) {
-            // response = { data: { id, onTime, late, overtime } }
+            
             if (response && response.data) {
-                // grab only the two you care about now
+                
                 MINUTES_OVERTIME = response.data.overtime;
                 MINUTES_LATE = response.data.late;
                 console.log(
@@ -140,6 +141,7 @@ function loadDataTable() {
 }
 
 function Deliver(id) {
+    console.log("delivery init")
     var lastOrder = document.getElementById("lastOrder");
     if (!lastOrder) return console.error("No #lastOrder element found");
     lastOrder.innerHTML = `
@@ -177,4 +179,9 @@ function updateStatus(id, status) {
             console.log("Error connecting to endpoint.");
         }
     });
+
+
 }
+
+window.Deliver = Deliver;
+window.Rollback = Rollback;

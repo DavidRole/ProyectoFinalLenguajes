@@ -8,7 +8,7 @@ using ProyectoFinalLenguajes.Utilities;
 namespace ProyectoFinalLenguajes.Areas.Kitchen.Controllers
 {
     [Area("Kitchen")]
-
+    [Authorize(Roles = StaticValues.RoleCook)]
     public class OrderController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
