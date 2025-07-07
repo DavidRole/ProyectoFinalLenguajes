@@ -32,7 +32,7 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
                 return NotFound();
             }
 
-            var order = _unitOfWork.Order.Get(o => o.Id == id, includeProperties: "OrderDishes");
+            var order = _unitOfWork.Order.Get(o => o.Id == id, includeProperties: "Customer,OrderDishes");
 
             if (order == null)
             {
