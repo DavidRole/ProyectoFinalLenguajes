@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Editar Estado de Orden";
-    // Si pasaste una lista de estados desde el controlador, la recuperas aquí
     var statusOptions = ViewBag.StatusOptions as SelectList;
 }
 
@@ -15,11 +14,8 @@
 
     <form method="post" asp-action="EditStatus" asp-route-id="@Model.Id">
         <input type="hidden" asp-for="Id" /> 
+
     
-
-@*Necesario para saber qué orden estamos editando *@
-
-         @*Mostrar información básica de la orden (solo lectura) *@
         <div class="mb-3">
             <label class="form-label text-secondary">Order Date:</label>
             <p class="form-control-plaintext">@Model.Date.ToString("dd/MM/yyyy HH:mm")</p>
@@ -32,7 +28,7 @@
 
         <hr class="my-4" />
 
-       @* Campo para editar el estado *@
+
         <div class="mb-3">
             <label asp-for="Status" class="form-label">New Status:</label>
             @if (statusOptions != null)
@@ -43,7 +39,7 @@
             }
             else
             {
-                <input asp-for="Status" class="form-control" readonly />  @*Fallback si no hay opciones *@
+                <input asp-for="Status" class="form-control" readonly />  
                 <p class="text-danger mt-1">Status option could not be loaded.</p>
             }
             <span asp-validation-for="Status" class="text-danger mx-1"></span>
