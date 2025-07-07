@@ -91,6 +91,13 @@ namespace ProyectoFinalLenguajes.Areas.Kitchen.Controllers
             return Json(new { success = true, message = "Order updated successfully" });
 
         }
+
+        [HttpGet]
+        public IActionResult Minutes()
+        {
+            var minutes = _unitOfWork.OrderMinutes.Get(x => x.Id == 1);
+            return Json(new { data = minutes });
+        }
         #endregion
     }
 }

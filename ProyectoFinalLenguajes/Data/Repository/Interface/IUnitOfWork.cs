@@ -8,6 +8,8 @@
 
         IOrderRepository Order { get; }
 
+        IOrderMinutesRepository OrderMinutes { get; }
+
         void Save();
     }
 }
