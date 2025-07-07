@@ -6,23 +6,23 @@
 
 <div class="border p-3 mt-4">
     <div class="row pb-2">
-        <h2 class="text-primary">Detalles de la Orden #@Model.Id</h2>
+        <h2 class="text-primary">Order #@Model.Id Details</h2>
         <hr />
     </div>
 
     
     <div class="mb-3">
-        <label class="form-label text-secondary">ID de la Orden:</label>
+        <label class="form-label text-secondary">Order ID:</label>
         <p class="form-control-plaintext">@Model.Id</p>
     </div>
 
     <div class="mb-3">
-        <label class="form-label text-secondary">Fecha de la Orden:</label>
+        <label class="form-label text-secondary">Order Date:</label>
         <p class="form-control-plaintext">@Model.Date.ToString("dd/MM/yyyy HH:mm")</p>
     </div>
 
     <div class="mb-3">
-        <label class="form-label text-secondary">Estado:</label>
+        <label class="form-label text-secondary">Status:</label>
         <p class="form-control-plaintext">
             <span class="badge @(Model.Status == "Completada" ? "bg-success" : Model.Status == "Pendiente" ? "bg-warning text-dark" : "bg-info")">
                 @Model.Status
@@ -33,36 +33,36 @@
     <hr class="my-4" /> 
 
     
-    <h3 class="text-primary mb-3">Información del Cliente</h3>
+    <h3 class="text-primary mb-3">Customer Information</h3>
     @if (Model.Customer != null)
     {
         <div class="mb-3">
-            <label class="form-label">Nombre del Cliente:</label>
+            <label class="form-label">Customer Name:</label>
             <p class="form-control-plaintext">@Model.Customer.FirstName @Model.Customer.LastName</p>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Email del Cliente:</label>
+            <label class="form-label">Customer Email:</label>
             <p class="form-control-plaintext">@Model.Customer.Email</p>
         </div>
 
     }
     else
     {
-        <p class="text-muted mb-3">Información del cliente no disponible.</p>
+        <p class="text-muted mb-3">No information available to display.</p>
     }
 
     <hr class="my-4" /> 
 
-    <h3 class="text-primary mb-3">Platos de la Orden</h3>
+    <h3 class="text-primary mb-3">Dishes Ordered</h3>
     @if (Model.OrderDishes != null && Model.OrderDishes.Any())
     {
         <table class="table table-bordered table-striped table-hover mb-4">
             <thead class="bg-light">
                 <tr>
-                    <th>Plato</th>
-                    <th>Cantidad</th>
-                    <th>Precio Unitario</th>
+                    <th>Dish</th>
+                    <th>Quantity</th>
+                    <th>Unitary Price</th>
                     <th>Subtotal</th>
                 </tr>
             </thead>
@@ -70,7 +70,7 @@
                 @foreach (var item in Model.OrderDishes)
                 {
                     <tr>
-                        <td>@(item.Dish?.Name ?? "Plato Desconocido")</td>
+                        <td>@(item.Dish?.Name ?? "Unknown dish")</td>
                         <td>@item.Quantity</td>
                         <td>@((item.Dish?.Price ?? 0).ToString("C", new System.Globalization.CultureInfo("es-CR")))</td>
                         <td>@((item.Quantity * (item.Dish?.Price ?? 0)).ToString("C", new System.Globalization.CultureInfo("es-CR")))</td>
@@ -79,7 +79,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th colspan="3" class="text-end">Total de la Orden:</th>
+                    <th colspan="3" class="text-end">Total price of the Order:</th>
                     <th>
                         @{
                             var totalOrder = Model.OrderDishes.Sum(od => od.Quantity * (od.Dish?.Price ?? 0));
@@ -92,7 +92,7 @@
     }
     else
     {
-        <p class="text-muted">No hay platos asociados a esta orden.</p>
+        <p class="text-muted">No dishes asociate to this order.</p>
     }
     <div class="d-flex justify-content-end gap-2">
         <a asp-area="Admins" asp-controller="Order" asp-action="Index" class="btn btn-outline-light">Back to List</a>

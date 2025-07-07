@@ -1,4 +1,4 @@
-﻿@model ProyectoFinalLenguajes.Models.Order
+﻿@model Order
 
 @{
     ViewData["Title"] = "Editar Estado de Orden";
@@ -8,7 +8,7 @@
 
 <div class="border p-3 mt-4">
     <div class="row pb-2">
-        <h2 class="text-primary">Editar Estado de la Orden #@Model.Id</h2>
+        <h2 class="text-primary">Order #@Model.Id Update</h2>
         <hr />
     </div>
 
@@ -21,12 +21,12 @@
 
          @*Mostrar información básica de la orden (solo lectura) *@
         <div class="mb-3">
-            <label class="form-label text-secondary">Fecha de la Orden:</label>
+            <label class="form-label text-secondary">Order Date:</label>
             <p class="form-control-plaintext">@Model.Date.ToString("dd/MM/yyyy HH:mm")</p>
         </div>
 
         <div class="mb-3">
-            <label class="form-label text-secondary">Cliente:</label>
+            <label class="form-label text-secondary">Customer:</label>
             <p class="form-control-plaintext">@(Model.Customer?.FirstName ?? "N/A") @(Model.Customer?.LastName ?? "")</p>
         </div>
 
@@ -34,17 +34,17 @@
 
        @* Campo para editar el estado *@
         <div class="mb-3">
-            <label asp-for="Status" class="form-label">Nuevo Estado:</label>
+            <label asp-for="Status" class="form-label">New Status:</label>
             @if (statusOptions != null)
             {
                 <select asp-for="Status" asp-items="statusOptions" class="form-select">
-                    <option disabled selected>-- Seleccione un estado --</option>
+                    <option disabled selected>-- Select a Status --</option>
                 </select>
             }
             else
             {
                 <input asp-for="Status" class="form-control" readonly />  @*Fallback si no hay opciones *@
-                <p class="text-danger mt-1">No se pudieron cargar las opciones de estado.</p>
+                <p class="text-danger mt-1">Status option could not be loaded.</p>
             }
             <span asp-validation-for="Status" class="text-danger mx-1"></span>
         </div>
@@ -52,7 +52,7 @@
         <hr class="my-4" />
 
         <div class="d-flex justify-content-end gap-2">
-            <button type="submit" class="btn btn-primary" style="width: 100px">Guardar</button>
+            <button type="submit" class="btn btn-primary" style="width: 100px">Save</button>
             <a asp-area="Admins" asp-controller="Order" asp-action="Index" class="btn btn-outline-light">Back to List</a>
         </div>
     </form>

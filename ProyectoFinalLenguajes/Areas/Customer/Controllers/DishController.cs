@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using ProyectoFinalLenguajes.Data.Repository.Interface;
 
 namespace ProyectoFinalLenguajes.Areas.Customer.Controllers
@@ -22,6 +23,13 @@ namespace ProyectoFinalLenguajes.Areas.Customer.Controllers
             var allDishes = _unitOfWork.Dish.GetAll();
             var enabledDishes = allDishes.Where(x => x.isAble);
             return Ok(enabledDishes);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetDish(int id)
+        {
+            var dish = _unitOfWork.Dish.Get(x => x.Id == id);
+            return Ok(dish);
         }
     }
 }
