@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProyectoFinalLenguajes.Data;
 
@@ -11,9 +12,11 @@ using ProyectoFinalLenguajes.Data;
 namespace ProyectoFinalLenguajes.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250707160507_AddMinutesInDB")]
+    partial class AddMinutesInDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -320,6 +323,9 @@ namespace ProyectoFinalLenguajes.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Late")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OnTime")
                         .HasColumnType("int");
 
                     b.Property<int>("Overtime")

@@ -15,5 +15,7 @@ namespace ProyectoFinalLenguajes.Data
         public DbSet<OrderDetail> OrderDetails { get; set; }
 
         public DbSet<AppUser> AppUsers { get; set; }
+
+        public DbSet<OrderMinutes> OrderMinutes { get; set; }
     }
 }

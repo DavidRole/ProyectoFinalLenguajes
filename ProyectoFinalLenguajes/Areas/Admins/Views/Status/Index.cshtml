@@ -1,0 +1,23 @@
+﻿@model OrderMinutes
+<form asp-action="Index" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="row w-100 justify-content-center mt-3">
+        <div class="card border-primary shadow-md rounded-4 p-4 mt-0" style="width:90%; max-width: 400px;">
+            <div class="card-body text-center">
+                <h3 class="text-primary">Waiting Status Minutes</h3>
+                
+                <div class="form-floating mb-3">
+                    <input type="number" asp-for="Overtime" class="form-control" />
+                    <label asp-for="Overtime"></label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="number" asp-for="Late" class="form-control" />
+                    <label asp-for="Late"></label>
+                </div>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary" style="width: 100px">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

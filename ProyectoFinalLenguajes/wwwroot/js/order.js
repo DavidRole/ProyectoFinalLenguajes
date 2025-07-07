@@ -3,9 +3,16 @@
     STATE_OVERTIME,
     STATE_LATE,
     STATE_DELIVERED,
-    STATE_NULLED;
+    STATE_NULLED,
+    MINUTES_OVERTIME,
+    MINUTES_LATE;
 
 $(document).ready(function () {
+    try {
+        setInterval(getMinutes(), 1000);
+    } catch (e) {
+        console.warn("Using fallback minute values", e);
+    }
     loadDataTable();
 
     var lastOrder = document.getElementById("lastOrder");
@@ -14,6 +21,38 @@ $(document).ready(function () {
         `;
 
 });
+
+function getMinutes() {
+    $.ajax({
+        url: "/Kitchen/Order/Minutes",
+        type: "GET",
+        dataType: "json",
+        success: function (response) {
+            // response = { data: { id, onTime, late, overtime } }
+            if (response && response.data) {
+                // grab only the two you care about now
+                MINUTES_OVERTIME = response.data.overtime;
+                MINUTES_LATE = response.data.late;
+                console.log(
+                    "Minute thresholds loaded: " +
+                    "Overtime=" + MINUTES_OVERTIME + ", " +
+                    "Late=" + MINUTES_LATE
+                );
+            }
+            else {
+                console.error("Invalid payload:", response);
+                MINUTES_OVERTIME = 5;
+                MINUTES_LATE = 10;
+            }
+        },
+        error: function (xhr, status, err) {
+            console.error("Error fetching thresholds:", err);
+            MINUTES_OVERTIME = 5;
+            MINUTES_LATE = 10;
+        }
+    });
+}
+
 
 function loadDataTable() {
     var $tbl = $('#tblData');
@@ -76,17 +115,17 @@ function loadDataTable() {
                 const diffMin = Math.floor((Date.now() - created) / 60000);
 
                 let cls;
-                if (diffMin < 5) {
+                if (diffMin < MINUTES_OVERTIME) {
                     cls = 'badge bg-success';
                     if (row.status != STATE_ON_TIME)
                         updateStatus(row.id, STATE_ON_TIME);
                 }
-                else if (diffMin >= 5 && diffMin <= 15) {
+                else if (diffMin >= MINUTES_OVERTIME && diffMin <= MINUTES_LATE) {
                     cls = 'badge bg-warning text-dark';
                     if (row.status != STATE_OVERTIME)
                         updateStatus(row.id, STATE_OVERTIME);
                 }
-                else if (diffMin > 15) {
+                else if (diffMin > MINUTES_LATE) {
                     cls = 'badge bg-danger';
                     if (row.status != STATE_LATE)
                         updateStatus(row.id, STATE_LATE);

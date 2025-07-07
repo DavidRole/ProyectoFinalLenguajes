@@ -12,12 +12,15 @@ namespace ProyectoFinalLenguajes.Data.Repository
 
         public IOrderRepository Order { get; private set; }
 
+        public IOrderMinutesRepository OrderMinutes { get; private set; }
+
         public UnitOfWork(AppDbContext db)
         {
             _db = db;
             Dish = new DishRepository(_db);
             Order = new OrderRepository(_db);
             OrderDetail = new OrderDetailRepository(_db);
+            OrderMinutes = new OrderMinutesRepository(_db);
 
         }
         public void Save()
