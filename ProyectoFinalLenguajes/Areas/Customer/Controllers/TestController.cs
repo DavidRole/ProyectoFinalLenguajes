@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace ProyectoFinalLenguajes.Areas.Customer.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Customer")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Customer")]
     [ApiController]
     [Route("api/[controller]")]
     public class TestController : Controller

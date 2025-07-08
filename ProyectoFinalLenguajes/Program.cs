@@ -35,16 +35,14 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 //cors
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAnyOrigin",
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
-        });
-});
+builder.Services.AddCors(opts =>
+  opts.AddPolicy("ClienteWeb", p => p
+    .WithOrigins("https://clientewebddf.netlify.app", "https://cliente-web-jade.vercel.app")
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+  )
+);
+
 
 builder.Services.AddAuthentication()
   .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtOpts =>
@@ -81,14 +79,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseCors("AllowAnyOrigin");
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseCors("AllowAnyOrigin");
-
 app.UseRouting();
+
+app.UseCors("ClienteWeb");
 
 app.UseAuthentication();
 app.UseAuthorization();
