@@ -37,11 +37,13 @@ builder.Services.AddScoped<IEmailSender, EmailSender>();
 //cors
 builder.Services.AddCors(opts =>
   opts.AddPolicy("ClienteWeb", p => p
-    .WithOrigins("https://clientewebddf.netlify.app", "https://cliente-web-jade.vercel.app")
+    .WithOrigins("https://cliente-web.netlify.app")
     .AllowAnyHeader()
     .AllowAnyMethod()
+    .AllowCredentials()
   )
 );
+
 
 
 builder.Services.AddAuthentication()

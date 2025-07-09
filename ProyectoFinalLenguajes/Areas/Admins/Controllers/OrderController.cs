@@ -96,7 +96,7 @@ namespace ProyectoFinalLenguajes.Areas.Admins.Controllers
             _unitOfWork.Order.Update(orderFromDb);
             _unitOfWork.Save();
 
-            TempData["Success"] = "Estado de la orden actualizado exitosamente.";
+            TempData["Success"] = "Order Status updated successfully.";
             return RedirectToAction("Details", new { id = order.Id });
         }
 

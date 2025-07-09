@@ -9,6 +9,12 @@ function loadDataTable() {
         ajax: {
             "url": "/Admins/Dish/GetAll"
         },
+        columnDefs: [
+            {
+                targets: '_all',
+                className: 'dt-left'
+            }
+        ],
         "columns": [
             { "data": "name", width: "50%" },
             { "data": "isAble", width: "20%" },

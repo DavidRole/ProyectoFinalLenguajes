@@ -69,6 +69,12 @@ function loadDataTable() {
         ajax: {
             "url": "/Kitchen/Order/GetAll"
         },
+        columnDefs: [
+            {
+                targets: '_all',
+                className: 'dt-left'
+            }
+        ],
         lengthMenu: [5, 10, 20, 50],
         order: [[0, 'desc']],
         "columns": [

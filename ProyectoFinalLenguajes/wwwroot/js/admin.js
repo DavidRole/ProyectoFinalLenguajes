@@ -12,7 +12,7 @@ function loadDataTable() {
             dataSrc: "data"
         },
         "columns": [
-            { "data": "firstName", width: "20%" },
+            { "data": "firstName", width: "20%"},
             { "data": "lastName", width: "20%" },
             { "data": "email", width: "30%" },
             { "data": "isAble", width: "10%" },

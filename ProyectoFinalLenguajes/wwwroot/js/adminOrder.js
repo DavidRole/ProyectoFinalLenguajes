@@ -11,22 +11,28 @@ function loadDataTable() {
             "url": "/Admins/Order/GetAll"
         },
         lengthMenu: [5, 10, 20, 50],
+        columnDefs: [
+            {
+                targets: '_all',  
+                className: 'dt-left'
+            }
+        ],
         "columns": [
             { "data": "id", width: "5%" },
             {
                 "data": "customer.firstName",
                 "render": function (data) {
-                    return data ?? 'Sin nombre';
+                    return data ?? 'No name';
                 },
                 width: "20%"
             },
             {
                 "data": "orderDishes",
                 "render": function (data) {
-                    if (!Array.isArray(data)) return "Sin platos";
+                    if (!Array.isArray(data)) return "No dishes";
 
                     return data.map(d => {
-                        const dishName = d.dish?.name ?? 'Desconocido';
+                        const dishName = d.dish?.name ?? 'Unknown';
                         const quantity = d.quantity ?? 0;
                         return `${dishName} x${quantity}`;
                     }).join("<br>");

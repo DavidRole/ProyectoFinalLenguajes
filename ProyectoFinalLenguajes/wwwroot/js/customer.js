@@ -11,6 +11,12 @@ function loadDataTable() {
             "url": "/Admins/Customer/GetAll",
             dataSrc: "data"
         },
+        columnDefs: [
+            {
+                targets: '_all',
+                className: 'dt-left'
+            }
+        ],
         "columns": [
             { "data": "firstName", width: "20%" },
             { "data": "lastName", width: "20%" },
